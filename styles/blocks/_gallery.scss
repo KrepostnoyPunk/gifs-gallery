@@ -1,0 +1,25 @@
+.gallery{
+    @include flex-center;
+    margin-top: 50px;
+
+    &__inner{
+        @include flex-center;
+        flex-direction: column;
+        row-gap: 40px;
+        width: 100%;
+    }
+
+    &__title{
+        letter-spacing: .7em;
+    }
+
+    &__tabs{
+        @include flex-center;
+        column-gap: 20px;
+    }
+
+    &__tab{
+        padding: 10px;
+        border: 1px solid black;
+    }
+}

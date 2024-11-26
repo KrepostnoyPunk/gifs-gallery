@@ -1,0 +1,12 @@
+@import 
+        'normalize',
+        'mixins',
+        'variables',
+        'globals',
+        'media.scss',
+        'utils.scss';
+
+@import 
+        './blocks/gallery',
+        './blocks/preview',
+        './blocks/btn';

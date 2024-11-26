@@ -1,0 +1,10 @@
+.btn{
+    padding: var(--btn-padding);
+    border-radius: var(--btn-border-radius);
+    
+    @include hover{
+        cursor: pointer;
+    }
+
+    
+}

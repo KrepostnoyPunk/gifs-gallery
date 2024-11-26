@@ -1,0 +1,14 @@
+.preview{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    width: 100%;
+    padding: 20px;
+
+    &__content{
+        @include flex-center;
+
+        width: 100%;
+        border: 2px solid black;
+    }
+}
