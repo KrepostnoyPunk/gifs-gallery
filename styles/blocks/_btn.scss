@@ -1,10 +1,28 @@
 .btn{
-    padding: var(--btn-padding);
+    @include reset-btn;
+
     border-radius: var(--btn-border-radius);
-    
-    @include hover{
-        cursor: pointer;
+    color: var(--accent-color);
+
+    &:not(&--input){
+        @include hover{
+            cursor: pointer;
+            scale: 1.1;
+        }
     }
 
-    
+    &--input{
+        @include square(var( --input-and-btn-height));
+        padding: 10px;
+        border: var(--border-accent);
+        cursor: pointer;
+
+        i{
+            color: var(--light-color);
+        }
+
+        &:hover{
+            opacity: .7;
+        }
+    }
 }

@@ -1,0 +1,28 @@
+.field{
+    @include flex-center;
+
+    column-gap: 40px;
+
+    justify-content: space-between;    
+    width: 100%;
+
+    &__input{
+        width: 100%;
+        height: var(--input-and-btn-height);
+        border: 2px solid transparent;
+        outline: none;
+        border-radius: var(--input-border-radius);
+        padding: var(--input-padding);
+
+        &:focus{
+            box-shadow: var(--box-shadow);
+            background-color: transparent;
+            color: var(--light-color)
+        }
+    }
+
+    &__controls{
+        @include flex-center;
+        column-gap: 10px;
+    }
+}

@@ -9,8 +9,24 @@
         width: 100%;
     }
 
+    &__header{
+        @include flex-center;
+        column-gap: 20px;
+
+        &__img{
+            @include square(120px);
+            filter: drop-shadow(4px 4px 15px var(--accent-color));
+
+            &:hover{
+                scale: 1.1;
+            }
+        }
+    }
+
     &__title{
-        letter-spacing: .7em;
+        font-size: 60px;
+        letter-spacing: .3em;
+        border-bottom: 6px dotted var(--accent-color);
     }
 
     &__tabs{
@@ -19,7 +35,14 @@
     }
 
     &__tab{
-        padding: 10px;
-        border: 1px solid black;
+        padding: var(--btn-padding);
+        border: 3px solid var(--light-color);
+        cursor: pointer;
+        outline: none;
+
+        &:focus{
+            border: 3px solid transparent;
+            box-shadow: var(--box-shadow);
+        }
     }
 }

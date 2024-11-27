@@ -1,14 +1,20 @@
 .preview{
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    @include flex-center;
     width: 100%;
-    padding: 20px;
+    
+    &-list{
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+        width: 100%;
+    }
 
-    &__content{
+    &__item{
         @include flex-center;
 
         width: 100%;
-        border: 2px solid black;
+        box-shadow: 0px 0px 6px 2px var(--light-color);
+        height: 282px;
+        border-radius: var(--card-border-radius);
     }
 }

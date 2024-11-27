@@ -6,24 +6,73 @@
     <title>Gif Gallery</title>
     <link rel="icon" href="mylabel.png">
     <link rel="stylesheet" href="./styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     
-    <div class="gallery">
+    <div class="gallery container">
         <div class="gallery__inner">
-            <h1 class="gallery__title">GIPHY</h1>
-            <div class="gallery__tabs">
-                <div class="gallery__tab">Search</div>
-                <div class="gallery__tab">Trenging</div>
-                <div class="gallery__tab">Clips</div>
+            <div class="gallery__header">
+                <a href="#">
+                    <img src="mylabel.png" alt="#" class="gallery__header__img">
+                </a>
+                <h1 class="gallery__title">GIPHY</h1>
             </div>
-            <ul class="gallery__preview preview">
-                <li class="preview__content">1</li>
-                <li class="preview__content">2</li>
-                <li class="preview__content">3</li>
-                <li class="preview__content">4</li>
-            </ul>
-            <button class="gallery__more-btn btn">More</button>
+            <nav>
+                <!-- доделать ul + li + a + btns -->
+                 <ul class="gallery__tabs">
+                    <li>
+                        <a class="gallery__tab" tabindex="0">
+                            <button>Search</button>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="gallery__tab" tabindex="0">
+                            <button>Trending</button>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="gallery__tab" tabindex="0">
+                            <button>Random</button>
+                        </a>
+                    </li>
+                 </ul>
+            </nav>
+            <form class="gallery__field field" id="gallery__form">
+                <input type="text" class="field__input">
+                <div class="field__controls">
+                    <button class="field-btn btn btn--input">
+                        <i class="fa-solid fa-x"></i>
+                    </button>
+                    <button class="field-btn btn btn--input" type="submit" form="gallery__form">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+            </form>
+            <div class="gallery__preview preview">
+                <ul class="gallery__preview-list preview-list">
+                    <li class="preview__item">
+                        <a href="#" class="preview__link">
+                            <img src="#" alt="#" class="preview__img">
+                        </a>
+                    </li>
+                    <li class="preview__item">
+                        <a href="#" class="preview__link">
+                            <img src="#" alt="#" class="preview__img">
+                        </a>
+                    </li>
+                    <li class="preview__item">
+                        <a href="#" class="preview__link">
+                            <img src="#" alt="#" class="preview__img">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <button class="gallery__more-btn btn">
+                <i class="fa-solid fa-angles-down fa-2x"></i>
+            </button>
         </div>
     </div>
 

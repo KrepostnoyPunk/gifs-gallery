@@ -1,29 +1,38 @@
 :root{
     // цвета
-    --dark-color: ;
-    --accent-color: orange;
+    --dark-color: #000;
+    --accent-color: #ae8bf8;
     --light-color: #e3e3e3;
-    --bg-color: linear-gradient(142deg, rgba(25,25,25,1) 0%, rgba(93,77,240,1) 100%);
+    --bg-color: #181619;
 
     // радиус рамок
     --card-border-radius: 16px;
-    --input-border-radius: 12px;
-    --btn-border-radius: 10px;
+    --input-border-radius: 2px;
+    --btn-border-radius: 2px;
 
     // шрифты
     --font-main: monospace, sans-serif;
 
+    // 
+    --border-accent: 2px solid var(--accent-color);
+
     // тени
-    --box-shadow: 5px 5px 5px 10px black;
+    --box-shadow: 0px 0px 6px 2px var(--accent-color);
+
+    --container-width: 1024px;
+    --container-padding-x: 60px;
 
     // отступы внутри кнопок
-    --btn-padding: 8px 36px;
+    --btn-padding: 6px 14px;
+
+    // input-padding
+    --input-padding: 0 12px;
 
     // высоты элементов
-    --input-height: 100px;
+    --input-and-btn-height: 50px;
 
     // длительность переходов
-    --transition-duration: .2s;
+    --transition-duration: .4s;
 
     // длительность анимаций
     --animation-duration: 3s;
