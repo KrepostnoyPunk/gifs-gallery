@@ -6,10 +6,13 @@ body{
 
     color: var(--light-color);
     background: var(--bg-color);
-
-    overflow: hidden;
 }
 
 * {
     transition-duration: var(--transition-duration);
+}
+
+a{
+    color: var(--light-color);
+    text-decoration: none;
 }

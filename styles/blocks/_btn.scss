@@ -21,8 +21,13 @@
             color: var(--light-color);
         }
 
-        &:hover{
+        @include hover{
             opacity: .7;
+        }
+
+        
+        @include mobile-l{
+            width: 100%;
         }
     }
 }

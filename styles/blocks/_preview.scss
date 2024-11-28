@@ -7,14 +7,35 @@
         grid-template-columns: repeat(3, 1fr);
         gap: 25px;
         width: 100%;
+
+        @include tablet-l{
+            grid-template-columns: repeat(2, 1fr)
+        }
+
+        @include mobile{
+            grid-template-columns: repeat(1, 1fr)
+        }
     }
 
     &__item{
         @include flex-center;
 
         width: 100%;
-        box-shadow: 0px 0px 6px 2px var(--light-color);
         height: 282px;
+        border-radius: var(--card-border-radius);
+
+        @include hover{
+            transform: translateY(-10px);
+        }
+    }
+
+    &__link{
+        @include flex-center;
+        height: 100%
+    }
+
+    &__img{
+        background-size: cover;
         border-radius: var(--card-border-radius);
     }
 }

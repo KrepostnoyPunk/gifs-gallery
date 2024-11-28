@@ -14,12 +14,16 @@
         column-gap: 20px;
 
         &__img{
-            @include square(120px);
+            @include square(150px);
             filter: drop-shadow(4px 4px 15px var(--accent-color));
 
-            &:hover{
-                scale: 1.1;
+            @include hover{
+                scale: 1.05;
             }
+        }
+
+        @include mobile-l{
+            flex-direction: column;
         }
     }
 
@@ -27,22 +31,57 @@
         font-size: 60px;
         letter-spacing: .3em;
         border-bottom: 6px dotted var(--accent-color);
+
+        @include mobile-l{
+            font-size: 50px;
+        }
+    }
+
+    &__navbar{
+
+        @include mobile-l{
+            @include flex-center;
+        }
     }
 
     &__tabs{
         @include flex-center;
         column-gap: 20px;
+        width: 100%;
+
+        @include mobile-l{
+            flex-direction: column;
+            row-gap: 30px;
+        }
     }
 
     &__tab{
+        max-width: 250px;
+
+        @include hover{
+            transform: translateY(-5px);
+        }
+    }
+
+    &__link{
+        display: block;
         padding: var(--btn-padding);
         border: 3px solid var(--light-color);
         cursor: pointer;
         outline: none;
-
-        &:focus{
-            border: 3px solid transparent;
-            box-shadow: var(--box-shadow);
+        
+        @include mobile-l{
+            width: 250px;
+            text-align: center;
         }
+    }
+
+    .active{
+        border: 3px solid transparent;
+        box-shadow: var(--box-shadow);
+    }
+
+    .attribution{
+        display: none;
     }
 }

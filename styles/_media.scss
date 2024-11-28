@@ -4,8 +4,14 @@ $desktop: 1280px;
 $tablet-above: 1024px;
 $tablet: 1023px;
 
+$tablet-l-above: 931px;
+$tablet-l: 930px;
+
 $mobile-above: 768px;
 $mobile: 767px;
+
+$mobile-l-above: 596px;
+$mobile-l: 595px;
 
 // миксины позволяющие вписывать медиа запросы непосредственно в селектор тем самым уменьшая объем и путаницу медиа запросов
 @mixin desktop-above {
@@ -16,6 +22,18 @@ $mobile: 767px;
 
 @mixin desktop {
     @media (max-width: $desktop) {
+        @content;
+    }
+}
+
+@mixin tablet-l-above {
+    @media (min-width: $tablet-l-above) {
+        @content;
+    }
+}
+
+@mixin tablet-l {
+    @media (max-width: $tablet-l) {
         @content;
     }
 }
@@ -40,6 +58,18 @@ $mobile: 767px;
 
 @mixin mobile {
     @media (max-width: $mobile) {
+        @content;
+    }
+}
+
+@mixin mobile-l-above {
+    @media (min-width: $mobile-l-above) {
+        @content;
+    }
+}
+
+@mixin mobile-l {
+    @media (max-width: $mobile-l) {
         @content;
     }
 }

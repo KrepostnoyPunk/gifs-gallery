@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gif Gallery</title>
+    <title>GIPHER</title>
     <link rel="icon" href="mylabel.png">
     <link rel="stylesheet" href="./styles/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -16,26 +16,23 @@
                 <a href="#">
                     <img src="mylabel.png" alt="#" class="gallery__header__img">
                 </a>
-                <h1 class="gallery__title">GIPHY</h1>
+                <h1 class="gallery__title">GIPHER</h1>
             </div>
-            <nav>
-                <!-- доделать ul + li + a + btns -->
+            <nav class="gallery__navbar">
                  <ul class="gallery__tabs">
-                    <li>
-                        <a class="gallery__tab" tabindex="0">
-                            <button>Search</button>
+                    <li class="gallery__tab">
+                        <a href="#" class="gallery__link" id="search">
+                            Search
                         </a>
                     </li>
-
-                    <li>
-                        <a class="gallery__tab" tabindex="0">
-                            <button>Trending</button>
+                    <li class="gallery__tab">
+                        <a href="#" class="gallery__link" id="trending">
+                            Trending
                         </a>
                     </li>
-
-                    <li>
-                        <a class="gallery__tab" tabindex="0">
-                            <button>Random</button>
+                    <li class="gallery__tab">
+                        <a href="#" class="gallery__link" id="random">
+                            Random
                         </a>
                     </li>
                  </ul>
@@ -53,26 +50,16 @@
             </form>
             <div class="gallery__preview preview">
                 <ul class="gallery__preview-list preview-list">
-                    <li class="preview__item">
-                        <a href="#" class="preview__link">
-                            <img src="#" alt="#" class="preview__img">
-                        </a>
-                    </li>
-                    <li class="preview__item">
-                        <a href="#" class="preview__link">
-                            <img src="#" alt="#" class="preview__img">
-                        </a>
-                    </li>
-                    <li class="preview__item">
-                        <a href="#" class="preview__link">
-                            <img src="#" alt="#" class="preview__img">
-                        </a>
-                    </li>
+                    
                 </ul>
             </div>
             <button class="gallery__more-btn btn">
                 <i class="fa-solid fa-angles-down fa-2x"></i>
             </button>
+        </div>
+
+        <div class="attribution">
+            <h3>Powered By<a href="https://giphy.com/"> GIPHY</a></h3>
         </div>
     </div>
 
