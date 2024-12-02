@@ -2,9 +2,13 @@ const linksEls = document.querySelectorAll('.gallery__link')
 const previewEl = document.querySelector('.preview')
 const searchBtnsEls = document.querySelectorAll('.field-btn')
 const searchInputEl = document.querySelector('.field__input')
-const moreBtnEl = document.querySelector('.gallery__more-btn')
 const searchForm = document.querySelector('.gallery__field')
+const moreBtnEl = document.querySelector('.gallery__more-btn')
+const preloaderEl = document.querySelector('.preloader')
 
+window.addEventListener('load', e => {
+    preloaderEl.style.display = 'none'
+})
 
 let ulEl; // будущий элемент списка в который будут добавляться элементы созданные на основе данных из объекта, объявлен глобально чтобы впоследствии очищать
 
@@ -12,7 +16,6 @@ let skipStep = 0; // счетчик шага пагинации, т.е. то, с
 const limitPerPage = 9; // лимит отображаемых на "страницу" гифок
 
 moreBtnEl.style.display = 'none' // начальный дисплей кнопки "показать больше"
-
 
 function createElements(dataObj){ // функция создающая элементы
 
@@ -40,6 +43,11 @@ function createElements(dataObj){ // функция создающая элем�
 
 function getData(endpoint, searchQuery, skipStep = 0){ // функция для отправки сетевых запросов
 
+    preloaderEl.style.cssText = `
+        display: inline-flex;
+        background-color: rgba(24, 22, 25, .3);
+    `
+
     let url; // задаем переменную для url-адреса...
 
     if(endpoint != 'search'){ // ...и в зависимости от условий структура запроса изменяется
@@ -49,26 +57,30 @@ function getData(endpoint, searchQuery, skipStep = 0){ // функция для 
     }
 
     fetch((url)) // отправляем запрос к выбранному эндпоинту
-    .then(response => { // получаем ответ от сервера
-        if(!response.ok){ // если не получаем или получаем с ошибкой, то кидаем новую ошибку ответа сети
-            throw new Error('Network response gone wrong...')
-        }
+        .then(response => { // получаем ответ от сервера
+            if(!response.ok){ // если не получаем или получаем с ошибкой, то кидаем новую ошибку ответа сети
+                throw new Error('Network response gone wrong...')
+            }
 
-        return response.json() // в случае получения успешного результата возвращаем преобразованный из JSON в JS объект
-    })
-    .then(dataObj => { // получаем JS объект с данными которые можно использовать
-        if(dataObj && dataObj.data){ // если получаем объект и если в объекте есть нужное свойство, то
-            console.log(dataObj);
-            console.log('Data received');
+            return response.json() // в случае получения успешного результата возвращаем преобразованный из JSON в JS объект
+        })
+        .then(dataObj => { // получаем JS объект с данными которые можно использовать
+            if(dataObj && dataObj.data){ // если получаем объект и если в объекте есть нужное свойство, то
+                console.log(dataObj);
+                console.log('Data received');
 
-            createElements(dataObj) // вызываем функцию создания элементов передавая аргументом объект с необходимыми данными
-        } else {
-            throw new Error('No received data from the source...') // если не получаем иили получаем с ошибкой, то кидаем ошибку о том что данные не получены
-        }
-    })
-    .catch(error => {
-        console.log('Network Error', error); // ловим и выводим ошибку
-    })
+                createElements(dataObj) // вызываем функцию создания элементов передавая аргументом объект с необходимыми данными
+
+                moreBtnEl.style.display = 'block'  
+                
+                preloaderEl.style.display = 'none'
+            } else {
+                throw new Error('No received data from the source...') // если не получаем иили получаем с ошибкой, то кидаем ошибку о том что данные не получены
+            }
+        })
+        .catch(error => {
+            console.log('Network Error', error); // ловим и выводим ошибку
+        })
 }
 
 function clearResult(){
@@ -90,15 +102,15 @@ linksEls.forEach(linkEl => {
             clearResult()
         }
 
-        if (linkEl.id === 'trending' && linkEl.classList.contains('active')) {
+        moreBtnEl.style.display = 'none'
+
+        searchInputEl.value = ''
+
+        if (linkEl.id === 'random' || linkEl.id === 'trending' && linkEl.classList.contains('active')) {
             searchForm.style.display = 'none'
-            moreBtnEl.style.display = 'block'
             getData(linkEl.id)
-        } else if (linkEl.id === 'random') {
-            moreBtnEl.style.display = 'none'
         } else {
             searchForm.style.display = 'flex'
-            moreBtnEl.style.display = 'none'
         }
     })
 })
@@ -112,9 +124,7 @@ searchBtnsEls.forEach(fieldBtn => {
                 let searchValue = searchInputEl.value
                 skipStep = 0
                 getData('search', searchValue, skipStep)
-                moreBtnEl.style.display = 'block'
                 clearResult()
-                // searchInputEl.value = ''
             } else {
                 searchInputEl.value = ''
                 moreBtnEl.style.display = 'none'
@@ -137,5 +147,11 @@ moreBtnEl.addEventListener('click', e => {
 
             getData(endpoint != 'search' ? endpoint : 'search', searchQuery, skipStep)
         }
+    }
+})
+
+searchInputEl.addEventListener('keypress', e => {
+    if(e.code === 'Enter' && e.target === document.activeElement && searchInputEl.value){
+        getData('search', searchInputEl.value, skipStep)
     }
 })

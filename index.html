@@ -9,11 +9,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
+
+    <div class="preloader"></div>
     
     <div class="gallery container">
         <div class="gallery__inner">
             <div class="gallery__header">
-                <a href="#">
+                <a href="">
                     <img src="mylabel.png" alt="#" class="gallery__header__img">
                 </a>
                 <h1 class="gallery__title">GIFER</h1>
@@ -21,13 +23,13 @@
             <nav class="gallery__navbar">
                  <ul class="gallery__tabs">
                     <li class="gallery__tab">
-                        <a href="#" class="gallery__link" id="search">
-                            Search
+                        <a href="#" class="gallery__link" id="trending">
+                            Trending
                         </a>
                     </li>
                     <li class="gallery__tab">
-                        <a href="#" class="gallery__link" id="trending">
-                            Trending
+                        <a href="#" class="gallery__link active" id="search">
+                            Search
                         </a>
                     </li>
                     <li class="gallery__tab">
@@ -38,12 +40,12 @@
                  </ul>
             </nav>
             <form class="gallery__field field" id="gallery__form">
-                <input type="text" class="field__input">
+                <input type="text" class="field__input" placeholder="Find something...">
                 <div class="field__controls">
                     <button class="field-btn btn btn--input btn--clear">
                         <i class="fa-solid fa-x"></i>
                     </button>
-                    <button class="field-btn btn btn--input btn--search" type="submit" form="gallery__form">
+                    <button class="field-btn btn btn--input btn--search" form="gallery__form">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
                 </div>
