@@ -1,0 +1,12 @@
+.error{
+    display: none;
+    @include square(700px);
+
+    @include mobile{
+        width: 500px;
+    }
+
+    @include mobile-l{
+        width: 350px;
+    }
+}

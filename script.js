@@ -4,13 +4,14 @@ const searchBtnsEls = document.querySelectorAll('.field-btn')
 const searchInputEl = document.querySelector('.field__input')
 const searchForm = document.querySelector('.gallery__field')
 const moreBtnEl = document.querySelector('.gallery__more-btn')
+const errorEl = document.querySelector('.error')
 const preloaderEl = document.querySelector('.preloader')
-
-window.addEventListener('load', e => {
-    preloaderEl.style.display = 'none'
-})
+const anchorEl = document.querySelector('.anchor')
+const galleryEl = document.querySelector('.gallery__inner')
 
 let ulEl; // будущий элемент списка в который будут добавляться элементы созданные на основе данных из объекта, объявлен глобально чтобы впоследствии очищать
+
+let linkEl;
 
 let skipStep = 0; // счетчик шага пагинации, т.е. то, сколько при последующем запросе пропустить элементов с начала
 const limitPerPage = 9; // лимит отображаемых на "страницу" гифок
@@ -26,19 +27,43 @@ function createElements(dataObj){ // функция создающая элем�
         previewEl.append(ulEl) // добавляем в контейнер созданный раннее ul
     }
 
-    let arr = dataObj.data; // получаем массив объектов из объекта data
+    if(Array.isArray(dataObj.data)){
+        let arr = dataObj.data; // получаем массив объектов из объекта dataObj
 
-    arr.forEach(obj => {
-        let liEl = document.createElement('li') // создаем элемент списка для организации элементов изображений
-        liEl.classList.add('preview__item') // добавляем класс для стилей
-        // получаем каждый из url каждого отдельного объекта и заполняем шаблон разметки
-        liEl.innerHTML = `
-            <a href="${obj.images.original.url}" class="preview__link" target="_blank">
-                <img src="${obj.images.original.url}" alt="${obj.images.original.url}" class="preview__img"> 
-            </a>
-        `
-        ulEl.append(liEl) // добавляем на каждой итерации li в ul
-    });
+        arr.forEach(obj => {
+            let liEl = document.createElement('li') // создаем элемент списка для организации элементов изображений
+            liEl.classList.add('preview__item') // добавляем класс для стилей
+            // получаем каждый из url каждого отдельного объекта и заполняем шаблон разметки
+            liEl.innerHTML = `
+                <a href="${obj.images.original.url}" class="preview__link" target="_blank">
+                    <img src="${obj.images.original.url}" alt="${obj.images.original.url}" class="preview__img"> 
+                </a>
+            `
+            ulEl.append(liEl) // добавляем на каждой итерации li в ul
+
+            ulEl.scrollIntoView({
+                behavior: "smooth",
+                block: "end",
+            })
+
+            anchorEl.style.display = 'flex'
+        });
+    } else {
+        if(!document.querySelector('.random')){
+            linkEl = document.createElement('a') // создаем элемент div в который будет добавляться элемент на основе данных из объекта
+            linkEl.classList.add('random') // добавляем класс для стилей
+            linkEl.target = "_blank"
+    
+            galleryEl.insertBefore(linkEl, moreBtnEl)
+        }
+        
+        let imgEl = document.createElement('img') 
+        imgEl.classList.add('random__img') 
+        imgEl.src = `${dataObj.data.images.original.url}`
+        linkEl.href = `${dataObj.data.images.original.url}`
+
+        linkEl.append(imgEl)
+    }
 }
 
 function getData(endpoint, searchQuery, skipStep = 0){ // функция для отправки сетевых запросов
@@ -50,10 +75,12 @@ function getData(endpoint, searchQuery, skipStep = 0){ // функция для 
 
     let url; // задаем переменную для url-адреса...
 
-    if(endpoint != 'search'){ // ...и в зависимости от условий структура запроса изменяется
+    if(endpoint === 'trending'){ // ...и в зависимости от условий структура запроса изменяется
         url = `http://api.giphy.com/v1/gifs/${endpoint}?api_key=11T5UhJN8ROnL1ZQbnHDUCdIDDqBwvJh&limit=${limitPerPage}&offset=${skipStep}`;
-    } else {
+    } else if (endpoint === 'search') {
         url = `http://api.giphy.com/v1/gifs/${endpoint}?q=${searchQuery}&api_key=11T5UhJN8ROnL1ZQbnHDUCdIDDqBwvJh&limit=${limitPerPage}&offset=${skipStep}`;
+    } else {
+        url = `http://api.giphy.com/v1/gifs/${endpoint}?api_key=11T5UhJN8ROnL1ZQbnHDUCdIDDqBwvJh`;
     }
 
     fetch((url)) // отправляем запрос к выбранному эндпоинту
@@ -62,10 +89,12 @@ function getData(endpoint, searchQuery, skipStep = 0){ // функция для 
                 throw new Error('Network response gone wrong...')
             }
 
+            console.log(response);
+
             return response.json() // в случае получения успешного результата возвращаем преобразованный из JSON в JS объект
         })
         .then(dataObj => { // получаем JS объект с данными которые можно использовать
-            if(dataObj && dataObj.data){ // если получаем объект и если в объекте есть нужное свойство, то
+            if(dataObj && dataObj.data && Array.isArray(dataObj.data)){ // если получаем объект и если в объекте есть нужное свойство, то
                 console.log(dataObj);
                 console.log('Data received');
 
@@ -73,6 +102,26 @@ function getData(endpoint, searchQuery, skipStep = 0){ // функция для 
 
                 moreBtnEl.style.display = 'block'  
                 
+                preloaderEl.style.display = 'none'
+
+                if(dataObj.data.length === 0){ // если длина полученного массива объектов === 0, т.е. нет результата по такому запросу, то...
+                    console.log('404. Page not found.');
+                    moreBtnEl.style.display = 'none'
+                    errorEl.style.display = 'block'
+                } else {
+                    errorEl.style.display = 'none'
+                }
+            }  else if(typeof dataObj.data === 'object'){
+                console.log(dataObj);
+                console.log('Received random');
+
+                moreBtnEl.style.cssText = `
+                    display: block;
+                    rotate: -90deg;
+                ` 
+
+                createElements(dataObj)
+
                 preloaderEl.style.display = 'none'
             } else {
                 throw new Error('No received data from the source...') // если не получаем иили получаем с ошибкой, то кидаем ошибку о том что данные не получены
@@ -87,7 +136,15 @@ function clearResult(){
     if(ulEl){
         ulEl.remove()
     }
+
+    if(linkEl){
+        linkEl.remove() 
+    }
 }
+
+window.addEventListener('load', e => {
+    preloaderEl.style.display = 'none'
+})
 
 linksEls.forEach(linkEl => {
     linkEl.addEventListener('click', e => { // по нажатию на элемент раздела...
@@ -98,13 +155,17 @@ linksEls.forEach(linkEl => {
 
         e.target.classList.add('active') // ...и добавляет его только цели события
 
-        if(document.querySelector('.preview-list')){ // если при переключении вкладки элемент присутствует на странице, то удалить его
+        if(document.querySelector('.preview-list') || document.querySelector('.random')){ // если при переключении вкладки элемент присутствует на странице, то удалить его
             clearResult()
         }
 
         moreBtnEl.style.display = 'none'
 
         searchInputEl.value = ''
+
+        moreBtnEl.style.rotate = "-360deg"
+
+        anchorEl.style.display = 'none'
 
         if (linkEl.id === 'random' || linkEl.id === 'trending' && linkEl.classList.contains('active')) {
             searchForm.style.display = 'none'
@@ -128,6 +189,8 @@ searchBtnsEls.forEach(fieldBtn => {
             } else {
                 searchInputEl.value = ''
                 moreBtnEl.style.display = 'none'
+                errorEl.style.display = 'none'
+                anchorEl.style.display = 'none'
                 clearResult()
             }
         }
@@ -140,18 +203,25 @@ moreBtnEl.addEventListener('click', e => {
         skipStep += limitPerPage // при каждом нажатии увеличивать шаг пропуска для получения следующих значений
 
         let activeLink = document.querySelector('.gallery__link.active')
+        let endpoint = activeLink.id;
+        let searchQuery = searchInputEl.value;
 
-        if(activeLink){
-            let endpoint = activeLink.id;
-            let searchQuery = searchInputEl.value;
-
+        if(activeLink.id === 'search' || activeLink.id === 'trending'){
             getData(endpoint != 'search' ? endpoint : 'search', searchQuery, skipStep)
+        } else {
+            clearResult()
+            moreBtnEl.style.display = 'none'
+            getData(endpoint, searchQuery, skipStep)
         }
     }
 })
 
-searchInputEl.addEventListener('keypress', e => {
-    if(e.code === 'Enter' && e.target === document.activeElement && searchInputEl.value){
+document.addEventListener('keydown', e => {
+    if(e.code === 'Enter' && e.target === searchInputEl && searchInputEl.value){
+        e.preventDefault()
+
+        skipStep += limitPerPage 
+
         getData('search', searchInputEl.value, skipStep)
     }
 })

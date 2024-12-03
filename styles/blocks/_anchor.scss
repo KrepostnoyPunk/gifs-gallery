@@ -1,0 +1,15 @@
+.anchor{
+    position: absolute;
+    bottom: 20px;
+    left: 30px;
+    @include square(40px);
+    background-color: rgba(170, 170, 170, .8);
+    color: var(--bg-color);
+    border-radius: 50%;
+    @include flex-center;
+    display: none;
+
+    @include hover{
+        background-color: rgba(170, 170, 170, .4);
+    }
+}

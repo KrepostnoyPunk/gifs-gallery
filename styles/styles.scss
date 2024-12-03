@@ -7,7 +7,11 @@
         'utils.scss';
 
 @import 
+        './blocks/preloader',
         './blocks/gallery',
         './blocks/field',
         './blocks/preview',
-        './blocks/btn';
+        './blocks/btn',
+        './blocks/error',
+        './blocks/anchor',
+        './blocks/random';
