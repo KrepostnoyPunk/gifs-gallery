@@ -184,7 +184,6 @@ body {
   font-family: var(--font-main);
   font-weight: 600;
   font-size: 20px;
-  background: linear-gradient(148deg, rgb(25, 25, 25) 0%, rgb(78, 58, 110) 100%);
   color: var(--light-color);
   position: relative;
 }
@@ -235,10 +234,11 @@ a {
   }
 }
 .gallery {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 50px;
+  padding-top: 50px;
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(148deg, rgb(25, 25, 25) 0%, rgb(78, 58, 110) 100%);
+  background-size: 100% 100%;
 }
 .gallery__inner {
   display: flex;

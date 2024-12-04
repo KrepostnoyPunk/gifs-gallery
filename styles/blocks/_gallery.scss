@@ -1,6 +1,9 @@
 .gallery{
-    @include flex-center;
-    margin-top: 50px;
+    padding-top: 50px;
+    width: 100%;    
+    min-height: 100vh;
+    background: linear-gradient(148deg, rgba(25,25,25,1) 0%, rgba(78,58,110,1) 100%);
+    background-size: 100% 100%;
 
     &__inner{
         @include flex-center;

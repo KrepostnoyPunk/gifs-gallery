@@ -1,10 +1,10 @@
 @import 
-        'normalize',
-        'mixins',
-        'variables',
-        'globals',
-        'media.scss',
-        'utils.scss';
+        './normalize',
+        './mixins',
+        './variables',
+        './globals',
+        './media',
+        './utils';
 
 @import 
         './blocks/preloader',

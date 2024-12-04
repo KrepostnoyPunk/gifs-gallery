@@ -1,34 +1,23 @@
+const preloaderEl = document.querySelector('.preloader')
+const galleryEl = document.querySelector('.gallery__inner')
 const linksEls = document.querySelectorAll('.gallery__link')
-const previewEl = document.querySelector('.preview')
-const searchBtnsEls = document.querySelectorAll('.field-btn')
-const searchInputEl = document.querySelector('.field__input')
 const searchForm = document.querySelector('.gallery__field')
+const searchInputEl = document.querySelector('.field__input')
+const searchBtnsEls = document.querySelectorAll('.field-btn')
+const previewEl = document.querySelector('.preview')
 const moreBtnEl = document.querySelector('.gallery__more-btn')
 const errorEl = document.querySelector('.error')
-const preloaderEl = document.querySelector('.preloader')
 const anchorEl = document.querySelector('.anchor')
-const galleryEl = document.querySelector('.gallery__inner')
 
-let ulEl; // будущий элемент списка в который будут добавляться элементы созданные на основе данных из объекта, объявлен глобально чтобы впоследствии очищать
-
-let linkEl;
-
-let skipStep = 0; // счетчик шага пагинации, т.е. то, сколько при последующем запросе пропустить элементов с начала
-const limitPerPage = 9; // лимит отображаемых на "страницу" гифок
-
-moreBtnEl.style.display = 'none' // начальный дисплей кнопки "показать больше"
-
-function createElements(dataObj){ // функция создающая элементы
-
-    if(!document.querySelector('.preview-list')){
+function createGallery(dataObj){
+    if(!document.querySelector('.preview-list')){ // если нету элемента галереи, то
         ulEl = document.createElement('ul') // создаем элемент ul в который будут добавляться элементы созданные на основе данных из объекта
         ulEl.classList.add('preview-list') // добавляем класс для стилей
 
         previewEl.append(ulEl) // добавляем в контейнер созданный раннее ul
     }
 
-    if(Array.isArray(dataObj.data)){
-        let arr = dataObj.data; // получаем массив объектов из объекта dataObj
+    let arr = dataObj.data; // получаем массив объектов из объекта dataObj
 
         arr.forEach(obj => {
             let liEl = document.createElement('li') // создаем элемент списка для организации элементов изображений
@@ -41,33 +30,35 @@ function createElements(dataObj){ // функция создающая элем�
             `
             ulEl.append(liEl) // добавляем на каждой итерации li в ul
 
-            ulEl.scrollIntoView({
+            ulEl.scrollIntoView({ // при создании элемента будет автодоскролл до определенной точки
                 behavior: "smooth",
                 block: "end",
             })
 
-            anchorEl.style.display = 'flex'
+            anchorEl.style.display = 'flex' // после создания элемента изменить видимость якоря-лифта
         });
-    } else {
-        if(!document.querySelector('.random')){
-            linkEl = document.createElement('a') // создаем элемент div в который будет добавляться элемент на основе данных из объекта
-            linkEl.classList.add('random') // добавляем класс для стилей
-            linkEl.target = "_blank"
-    
-            galleryEl.insertBefore(linkEl, moreBtnEl)
-        }
-        
-        let imgEl = document.createElement('img') 
-        imgEl.classList.add('random__img') 
-        imgEl.src = `${dataObj.data.images.original.url}`
-        linkEl.href = `${dataObj.data.images.original.url}`
+}
 
-        linkEl.append(imgEl)
+function createRandom(dataObj){
+    if(!document.querySelector('.random')){
+        linkEl = document.createElement('a') // создаем элемент a в который будет добавляться элемент на основе данных из объекта
+        linkEl.classList.add('random') // добавляем класс для стилей
+        linkEl.target = "_blank"
+
+        galleryEl.insertBefore(linkEl, moreBtnEl) // вставить элемент перед кнопкой More
     }
+    
+    let imgEl = document.createElement('img') // создаем сам элемент изображения
+    imgEl.classList.add('random__img') 
+    imgEl.src = `${dataObj.data.images.original.url}` // устанавливаем источник изображения
+    linkEl.href = `${dataObj.data.images.original.url}`
+
+    linkEl.append(imgEl) // добавить в ссылку элемент изображения
 }
 
 function getData(endpoint, searchQuery, skipStep = 0){ // функция для отправки сетевых запросов
 
+    // в начале функции "запускается" прелоадер
     preloaderEl.style.cssText = `
         display: inline-flex;
         background-color: rgba(24, 22, 25, .3);
@@ -89,43 +80,35 @@ function getData(endpoint, searchQuery, skipStep = 0){ // функция для 
                 throw new Error('Network response gone wrong...')
             }
 
-            console.log(response);
-
             return response.json() // в случае получения успешного результата возвращаем преобразованный из JSON в JS объект
         })
         .then(dataObj => { // получаем JS объект с данными которые можно использовать
-            if(dataObj && dataObj.data && Array.isArray(dataObj.data)){ // если получаем объект и если в объекте есть нужное свойство, то
-                console.log(dataObj);
-                console.log('Data received');
+            if(dataObj && dataObj.data && Array.isArray(dataObj.data)){ // если получаем объект и если в объекте есть нужное свойство и если значение этого свойства - массив, то
 
-                createElements(dataObj) // вызываем функцию создания элементов передавая аргументом объект с необходимыми данными
+                createGallery(dataObj) // вызываем функцию создания галереи передавая аргументом объект с необходимыми данными
 
-                moreBtnEl.style.display = 'block'  
+                moreBtnEl.style.display = 'block' // после выполнения функции создания элементов делаем видимой кнопку More
                 
-                preloaderEl.style.display = 'none'
+                 // и убираем прелоадер 
 
                 if(dataObj.data.length === 0){ // если длина полученного массива объектов === 0, т.е. нет результата по такому запросу, то...
-                    console.log('404. Page not found.');
                     moreBtnEl.style.display = 'none'
-                    errorEl.style.display = 'block'
-                } else {
-                    errorEl.style.display = 'none'
+                    errorEl.style.display = 'block' // делаем видимой иллюстрацию об ошибке 404
                 }
-            }  else if(typeof dataObj.data === 'object'){
-                console.log(dataObj);
-                console.log('Received random');
+            }  else if(typeof dataObj.data === 'object'){ // если свойство по ключу - объект, то это значит что мы получили random, потому что в этом случае возвращается единичная гифка в виде объекта, а не массив объектов
 
+                // поворачиваем кнопку на 90 градусов чтобы не добавлять новые элементы
                 moreBtnEl.style.cssText = `
                     display: block;
                     rotate: -90deg;
                 ` 
 
-                createElements(dataObj)
-
-                preloaderEl.style.display = 'none'
+                createRandom(dataObj) // вызываем функцию создания слайдера для random передавая аргументом объект с необходимыми данными
             } else {
-                throw new Error('No received data from the source...') // если не получаем иили получаем с ошибкой, то кидаем ошибку о том что данные не получены
+                throw new Error('No received data from the source...') // если получаем пустой объект, то кидаем ошибку о том что данные отсутствуют
             }
+
+            preloaderEl.style.display = 'none'
         })
         .catch(error => {
             console.log('Network Error', error); // ловим и выводим ошибку
@@ -133,6 +116,8 @@ function getData(endpoint, searchQuery, skipStep = 0){ // функция для 
 }
 
 function clearResult(){
+    // если есть какой либо из элементов то при вызове функции - удаляем его
+
     if(ulEl){
         ulEl.remove()
     }
@@ -142,12 +127,23 @@ function clearResult(){
     }
 }
 
-window.addEventListener('load', e => {
+let ulEl; // будущий элемент списка в который будут добавляться элементы созданные на основе данных из объекта, объявлен глобально чтобы впоследствии очищать
+
+let linkEl; // будущий элемент ссылки в который будет добавляться элемент созданный на основе данных из объекта, объявлен глобально чтобы впоследствии очищать
+
+let skipStep = 0; // счетчик шага пагинации, т.е. то, сколько при последующем запросе пропустить элементов с начала
+const limitPerPage = 9; // лимит отображаемых на "страницу" гифок
+
+moreBtnEl.style.display = 'none' // начальный дисплей кнопки "показать больше"
+
+errorEl.style.display = 'none' // начальный дисплей иллюстрации ошибки
+
+window.addEventListener('load', e => { // по загрузке страницы уберет прелоадер
     preloaderEl.style.display = 'none'
 })
 
 linksEls.forEach(linkEl => {
-    linkEl.addEventListener('click', e => { // по нажатию на элемент раздела...
+    linkEl.addEventListener('click', e => { // при переключении раздела...
 
         linksEls.forEach(removable => { // ...создаем цикл который удаляет у всех элементов группы класс active...
             removable.classList.remove('active')
@@ -155,7 +151,7 @@ linksEls.forEach(linkEl => {
 
         e.target.classList.add('active') // ...и добавляет его только цели события
 
-        if(document.querySelector('.preview-list') || document.querySelector('.random')){ // если при переключении вкладки элемент присутствует на странице, то удалить его
+        if(document.querySelector('.preview-list') || document.querySelector('.random')){ // если при переключении вкладки элемент присутствует на странице, то вызвать функцию очистки
             clearResult()
         }
 
@@ -176,15 +172,14 @@ linksEls.forEach(linkEl => {
     })
 })
 
-searchBtnsEls.forEach(fieldBtn => {
+searchBtnsEls.forEach(fieldBtn => { // при нажатии на кнопки поля ввода...
     fieldBtn.addEventListener('click', e => {
         e.preventDefault()
 
         if(searchInputEl.value){
             if(e.target.classList.contains('btn--search') || e.target.closest('.btn--search')){
-                let searchValue = searchInputEl.value
-                skipStep = 0
-                getData('search', searchValue, skipStep)
+                skipStep = 0 // обнуляем счетчик шагов пагинации чтобы при новом поисковом запросе результаты показывались с начала, а не с предыдщуей сохраненной "страницы"
+                getData('search', searchInputEl.value, skipStep)
                 clearResult()
             } else {
                 searchInputEl.value = ''
@@ -206,7 +201,7 @@ moreBtnEl.addEventListener('click', e => {
         let endpoint = activeLink.id;
         let searchQuery = searchInputEl.value;
 
-        if(activeLink.id === 'search' || activeLink.id === 'trending'){
+        if(endpoint === 'search' || endpoint === 'trending'){
             getData(endpoint != 'search' ? endpoint : 'search', searchQuery, skipStep)
         } else {
             clearResult()
