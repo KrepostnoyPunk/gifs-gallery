@@ -67,11 +67,11 @@ function getData(endpoint, searchQuery, skipStep = 0){ // функция для 
     let url; // задаем переменную для url-адреса...
 
     if(endpoint === 'trending'){ // ...и в зависимости от условий структура запроса изменяется
-        url = `http://api.giphy.com/v1/gifs/${endpoint}?api_key=11T5UhJN8ROnL1ZQbnHDUCdIDDqBwvJh&limit=${limitPerPage}&offset=${skipStep}`;
+        url = `https://api.giphy.com/v1/gifs/${endpoint}?api_key=11T5UhJN8ROnL1ZQbnHDUCdIDDqBwvJh&limit=${limitPerPage}&offset=${skipStep}`;
     } else if (endpoint === 'search') {
-        url = `http://api.giphy.com/v1/gifs/${endpoint}?q=${searchQuery}&api_key=11T5UhJN8ROnL1ZQbnHDUCdIDDqBwvJh&limit=${limitPerPage}&offset=${skipStep}`;
+        url = `https://api.giphy.com/v1/gifs/${endpoint}?q=${searchQuery}&api_key=11T5UhJN8ROnL1ZQbnHDUCdIDDqBwvJh&limit=${limitPerPage}&offset=${skipStep}`;
     } else {
-        url = `http://api.giphy.com/v1/gifs/${endpoint}?api_key=11T5UhJN8ROnL1ZQbnHDUCdIDDqBwvJh`;
+        url = `https://api.giphy.com/v1/gifs/${endpoint}?api_key=11T5UhJN8ROnL1ZQbnHDUCdIDDqBwvJh`;
     }
 
     fetch((url)) // отправляем запрос к выбранному эндпоинту
